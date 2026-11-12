@@ -8,16 +8,16 @@ Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nh
 
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 |---|---|---|
-|  |  |  |
-|  |  |  |
+| Vũ Lê Đức | 2A202603683 | Thêm 3 case kịch bản (2), cùng nhóm lựa chọn kịch bản đắt giá nhất rồi thực hiện phân tích + cải tiến (3) |
+| Trần Việt Thịnh | 2A202603661  | Thêm 3 case kịch bản mục 2, làm mục 1 và 4 |
 | Trần Thanh Long | 2A202603674 | draft prototype, help with chặng 2,4,5 |
 
 ## §1. Lát cắt & phạm vi
 - Lát cắt (chép từ track): Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
 - 3 việc tính năng KHÔNG làm, mỗi việc một câu vì sao.
- - Không quyết định bồi thường hay ngoại lệ chính sách. Vì quyền này thuộc hãng và nhân viên, và dữ liệu cho thấy huỷ do bão thì không bồi thường tiền mặt. Một lời hứa sai làm khách mất lòng tin và nhân viên phải gỡ.
- - Không xử lý đổi tên người bay, hay trẻ nhỏ bay một mình. Vì Track không có tool nào cho việc này, và sai ở đây là rủi ro an toàn cho một đứa trẻ 5 tuổi, không phải rủi ro tiền bạc. Các ca này chuyển nhân viên.
- - Không chạm vào thanh toán (xin số thẻ, OTP) và không huỷ được yêu cầu hoàn đã gửi. Vì Track không có tool nào cho hai việc này, và sản phẩm thật cũng không cho huỷ yêu cầu hoàn. Trợ lý chỉ được nói đúng điều đó, không được hứa một nút hoàn tác không tồn tại.
+  + Không quyết định bồi thường hay ngoại lệ chính sách. Vì quyền này thuộc hãng và nhân viên, và dữ liệu cho thấy huỷ do bão thì không bồi thường tiền mặt. Một lời hứa sai làm khách mất lòng tin và nhân viên phải gỡ.
+  + Không xử lý đổi tên người bay, hay trẻ nhỏ bay một mình. Vì Track không có tool nào cho việc này, và sai ở đây là rủi ro an toàn cho một đứa trẻ 5 tuổi, không phải rủi ro tiền bạc. Các ca này chuyển nhân viên.
+  + Không chạm vào thanh toán (xin số thẻ, OTP) và không huỷ được yêu cầu hoàn đã gửi. Vì Track không có tool nào cho hai việc này, và sản phẩm thật cũng không cho huỷ yêu cầu hoàn. Trợ lý chỉ được nói đúng điều đó, không được hứa một nút hoàn tác không tồn tại.
 
 ## §2. Kịch bản rủi ro  (chặng 2)
 | Tin người dùng nhắn | Lớp | AI có thể sai thế nào | Sản phẩm tốt nên làm gì | Nhãn |
