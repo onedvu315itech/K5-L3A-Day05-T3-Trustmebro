@@ -1,35 +1,38 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prototype · T3 Du lịch · Trustmebro — "Huỷ chuyến" nghĩa là đổi hay hoàn?</title>
+<title>Prototype · T3 Du lịch · Trustmebro — 2 kịch bản đắt nhất</title>
 <style>
 :root{--ink:#1d2321;--mut:#6b6f6c;--line:#dcd8cf;--bg:#f6f4ef;--g:#2e6a4f;--gb:#e5f1ea;--a:#8a6516;--ab:#fbefd3;--r:#a33b2b;--rb:#f8e3df;--b:#28507a;--bb:#e3ecf6}
 *{box-sizing:border-box}body{margin:0;font-family:"Be Vietnam Pro","Noto Sans","Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.45}
 header{padding:16px 28px 12px;border-bottom:1px solid var(--line);background:#fff}
 h1{font-size:20px;margin:0 0 4px}.sub{color:var(--mut);font-size:13.5px}
-.ctl{display:flex;gap:14px;margin-top:10px;align-items:center;font-size:13.5px}
+.ctl{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;font-size:13.5px}
+.tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.tab.on{border-color:var(--ink);background:var(--ink);color:#fff}
 main{display:grid;grid-template-columns:410px 1fr;gap:24px;padding:20px 28px 28px;max-width:1300px}
 .phone{background:#fff;border:1px solid var(--line);border-radius:28px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
 .bar{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);padding:0 6px 8px;border-bottom:1px solid var(--line)}
 .trip{margin:10px 4px 6px;padding:10px 12px;border-radius:12px;background:var(--rb);font-size:13.5px}.trip b{color:var(--r)}
 .holdbar{margin:0 4px 6px;padding:7px 12px;border-radius:12px;font-size:13px;background:var(--gb);border:1px solid #bcd9c8;display:none}
 .holdbar.show{display:block}.holdbar.off{background:#eceae4;border-color:var(--line);color:var(--mut)}
-.chat{display:flex;flex-direction:column;gap:10px;padding:6px 4px;min-height:440px}
+.chat{display:flex;flex-direction:column;gap:10px;padding:6px 4px;min-height:420px}
 .me{align-self:flex-end;background:var(--b);color:#fff;padding:9px 12px;border-radius:14px 14px 2px 14px;max-width:85%}
 .ai{align-self:flex-start;background:#f1efe9;padding:10px 12px;border-radius:14px 14px 14px 2px;max-width:95%}
+.ai.bad{background:var(--rb);border:1.5px dashed var(--r)}
 .ai .who{font-size:12px;color:var(--mut);margin-bottom:3px}
 .old .btns,.old input,.old .opt button{pointer-events:none;opacity:.45}
 .conf{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;margin:6px 0 2px;background:var(--ab);color:var(--a);font-weight:600}
 .ev{font-size:12.5px;color:var(--mut);border-left:3px solid var(--line);padding-left:8px;margin-top:6px}
 .opt{border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px;background:#fff;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
-.opt small{color:var(--mut)}.opt.sel{border-color:var(--g);background:var(--gb)}
+.opt small{color:var(--mut)}.opt.no{opacity:.55;background:#f4f2ee}
 .box{border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}
 .box.warn{background:var(--ab);border:1px solid #ecd59e}.box.done{background:var(--bb);border:1px solid #bcd0e6}.box.red{background:var(--rb);border:1px solid #e9bdb4}.box.hold{background:var(--gb);border:1px solid #bcd9c8}
 .btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .btn{border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;background:#e8e5de}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btn.pri{background:var(--g);color:#fff}.btn.out{background:#fff;border:1.5px solid var(--ink)}.btn.danger{background:var(--r);color:#fff}
-.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 4px 0;border-top:1px dashed var(--line);margin-top:8px}
-.chips span{font-size:12px;color:var(--mut);width:100%}
+.btn.pri{background:var(--g);color:#fff}.btn.out{background:#fff;border:1.5px solid var(--ink)}
+.demo{display:flex;gap:6px;flex-wrap:wrap;padding:8px 4px 0;border-top:1px dashed var(--line);margin-top:8px}
+.demo span{font-size:12px;color:var(--mut);width:100%}
 .chip{border:1.5px solid var(--b);color:var(--b);background:#fff;border-radius:999px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer}
 .timer{font-variant-numeric:tabular-nums;font-weight:700}
 .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#c2410c;color:#fff;font-size:11.5px;font-weight:700;margin-right:4px;vertical-align:1px;flex:none}
@@ -41,133 +44,160 @@ aside{display:flex;flex-direction:column;gap:16px}
 table{border-collapse:collapse;width:100%;font-size:13.5px}td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600}
 tr.hot td{background:#fffaf0}
 .pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
-.p-auto{background:var(--gb);color:var(--g)}.p-ask{background:var(--ab);color:var(--a)}.p-no{background:var(--rb);color:var(--r)}
+.p-auto{background:var(--gb);color:var(--g)}.p-ask{background:var(--ab);color:var(--a)}
 #log{list-style:none;padding:0;margin:0;font-size:13px}#log li{padding:4px 0;border-bottom:1px solid var(--line)}#log li:last-child{border:0}
-#log .t{color:var(--mut);font-variant-numeric:tabular-nums;margin-right:6px}
 .ann{padding-left:0;list-style:none;margin:0}.ann li{margin-bottom:5px}
 .foot{font-size:12px;color:var(--mut);padding:0 28px 20px}
 </style></head>
 <body>
 <header>
- <h1>T3 Du lịch · Nhóm Trustmebro — khách nói "Huỷ chuyến", AI không được tự hiểu là "gửi hoàn vé"</h1>
- <div class="sub">Ca khó: chữ "huỷ" mơ hồ (đổi miễn phí hay hoàn toàn bộ?) và <code>gui_yeu_cau_hoan_ve</code> gửi rồi <b>không rút lại được</b>. Dữ liệu dựng (TRV-7Q2K); hãng "Bay Mẫu" là hãng dựng. Không gọi AI thật, không gửi dữ liệu đi đâu.</div>
- <div class="ctl"><button class="btn out" id="reset">↺ Bắt đầu lại</button>
-  <label style="margin:0"><input type="checkbox" id="annT" checked> Hiện số chú thích HAX/PAIR</label></div>
+ <h1>T3 Du lịch · Nhóm Trustmebro — chuyến bị huỷ, AI giữ chỗ trước, chỉ đổi vé khi khách bấm xác nhận</h1>
+ <div class="sub">Hai kịch bản đắt nhất trong spec §3. Dữ liệu dựng theo §3, không phải người thật. Không gọi AI thật, không gửi dữ liệu đi đâu.</div>
+ <div class="ctl">
+  <button class="tab on" data-t="tab1">Kịch bản 1 · "đổi cho tôi và con tôi"</button>
+  <button class="tab" data-t="tab2">Kịch bản 2 · "ok đổi đi"</button>
+  <button class="btn out" id="reset">↺ Bắt đầu lại</button>
+  <label style="margin:0 0 0 8px"><input type="checkbox" id="annT" checked> Hiện số chú thích HAX/PAIR</label>
+ </div>
 </header>
 <main>
  <section class="phone">
   <div class="bar"><span>Đặt chỗ của tôi · TRV-7Q2K</span><span>15:02</span></div>
-  <div class="trip"><b>BM 213 · Hà Nội → TP.HCM · 12/11 19:00 · ĐÃ HUỶ</b> do thời tiết (bão).<br>2 hành khách: Nguyễn Minh An · bé Nguyễn Gia Bình (5 tuổi)</div>
+  <div class="trip" id="trip"></div>
   <div class="holdbar" id="hold"></div>
   <div class="chat" id="chat"></div>
-  <div class="chips" id="chips"><span>Khách nhắn thêm (thử ca lạ):</span>
-   <button class="chip" data-c="comp">"Bão mà, có được bồi thường không?"</button>
-   <button class="chip" data-c="bank">"Hoàn vô tài khoản 27183121 Techcombank"</button>
-  </div>
+  <div class="demo" id="demo"></div>
  </section>
  <aside>
   <div class="panel"><h2>AI vừa gọi tool gì, ở mức nào</h2><ul id="log"></ul></div>
-  <div class="panel"><h2>Mức tự chủ của 5 tool (theo spec §4 — dòng tô vàng là tool đang dùng)</h2>
+  <div class="panel"><h2>Mức tự chủ của 5 tool (spec §4 — dòng tô vàng là tool đã dùng)</h2>
    <table><tr><th>Tool</th><th>Mức</th><th>Vì sao (cái giá khi sai)</th></tr><tbody id="tools"></tbody></table></div>
-  <div class="panel"><h2>Chú thích: nguyên tắc nào nằm ở đâu</h2><ul class="ann">
-   <li><span class="n">1</span><b>HAX G1 · làm rõ hệ thống làm được gì</b> — Nhãn "Trợ lý AI" trên mọi tin (Luật AI 134/2025 Đ.11) và câu "mình chưa gửi gì cả".</li>
-   <li><span class="n">2</span><b>HAX G2 · làm rõ làm tốt tới đâu</b> — Nhãn "Mình chưa chắc: 'huỷ' có 2 nghĩa", nói chỗ mơ hồ thay vì con số %.</li>
-   <li><span class="n">3</span><b>HAX G10 · thu hẹp khi nghi ngờ</b> — Hỏi lại một câu với 2 nút (đổi / hoàn) thay vì đoán và gọi tool không đảo được.</li>
-   <li><span class="n">4</span><b>HAX G11 + PAIR Explainability</b> — Dòng "Dựa vào": đặt chỗ, lý do huỷ, chính sách Bay Mẫu.</li>
-   <li><span class="n">5</span><b>HAX G8 + PAIR Feedback &amp; Control</b> — Giữ chỗ BM 201 tự động, đếm ngược 20 phút, nút "Nhả chỗ": khách cân nhắc mà không mất chuyến tốt.</li>
-   <li><span class="n">6</span><b>PAIR Errors + Graceful Failure</b> — Thẻ hoàn vé soạn sẵn, tách khỏi nút gửi: ghi rõ không huỷ được, mất chỗ đang giữ, tới 90 ngày, không bồi thường tiền mặt; phải tích ô mới gửi.</li>
-   <li><span class="n">7</span><b>HAX G9 · sửa dễ</b> — Bỏ chọn hành khách ngay trên thẻ; nút "Quay lại, đổi chuyến".</li>
-   <li><span class="n">8</span><b>PAIR Graceful Failure · chuyển người</b> — Khi không còn đường lui (đã gửi, bé bay một mình, đổi số tài khoản): chuyển nhân viên kèm tóm tắt.</li>
-  </ul></div>
+  <div class="panel"><h2>Chú thích: nguyên tắc nào nằm ở đâu</h2><ul class="ann" id="ann"></ul></div>
  </aside>
 </main>
-<div class="foot">LAB5 · AI20K K5 · Ngày 5 · Nhóm Trustmebro. Một file HTML, mọi câu AI là kịch bản dựng sẵn.</div>
+<div class="foot">LAB5 · AI20K K5 · Ngày 5 · Nhóm Trustmebro. Một file HTML; mọi câu AI là kịch bản dựng sẵn theo spec §3.</div>
 <script>
-const $=s=>document.querySelector(s);
-const PAX=['Nguyễn Minh An','bé Nguyễn Gia Bình (5 tuổi)'];
-const TOOLS=[['tra_cuu_dat_cho','Tự làm','p-auto','Chỉ đọc; bắt khách duyệt mỗi lần tra thì không ai dùng.'],
- ['giu_cho_chuyen_moi','Tự làm','p-auto','Hết 20 phút tự nhả, chưa đổi vé. Không giữ thì chuyến tốt hết chỗ trong lúc khách cân nhắc.'],
- ['doi_chuyen_bay','Cần khách xác nhận','p-ask','Dùng mất lần đổi miễn phí duy nhất; khó đảo. Một lần bấm xác nhận chặn được đổi nhầm.'],
- ['gui_yeu_cau_hoan_ve','Cần khách xác nhận + tích ô','p-ask','Gửi rồi không huỷ được, mất chỗ, tới 90 ngày. AI chỉ soạn sẵn; khách tự tích ô và bấm gửi.'],
- ['chuyen_nhan_vien','Tự làm','p-auto','Chuyển thừa chỉ tốn công nhân viên. Đã gửi hoàn mà đổi ý, trẻ bay một mình, đổi tài khoản nhận tiền: luôn chuyển.']];
-let hot=new Set(),log=[],holdT=null,sec=0,clock=2;
-const ai=(x,n1=true)=>`<div class="ai"><div class="who">${n1?'<span class="n">1</span>':''}Trợ lý AI · Đặt chỗ của tôi</div>${x}</div>`;
-const me=x=>`<div class="me">${x}</div>`;
-const EV='<div class="ev"><span class="n">4</span>Dựa vào: đặt chỗ TRV-7Q2K · BM 213 huỷ do thời tiết (tin báo 14:42) · chính sách Bay Mẫu: chuyến bị huỷ được <b>đổi miễn phí 1 lần trong 48 giờ</b> hoặc <b>hoàn toàn bộ</b>; huỷ do thời tiết <b>không bồi thường tiền mặt</b>.</div>';
-const STAFF=`<button class="btn out" onclick="go('staff')"><span class="n">8</span>Gặp nhân viên</button>`;
-function call(tool,note){const t=TOOLS.find(r=>r[0]==tool);hot.add(tool);log.push(`<span class="t">15:0${clock++%10}</span><code>${tool}</code> <span class="pill ${t[2]}">${t[1]}</span> — ${note}`);side()}
-function side(){$('#tools').innerHTML=TOOLS.map(r=>`<tr class="${hot.has(r[0])?'hot':''}"><td><code>${r[0]}</code></td><td><span class="pill ${r[2]}">${r[1]}</span></td><td>${r[3]}</td></tr>`).join('');
- $('#log').innerHTML=log.map(l=>`<li>${l}</li>`).join('')||'<li style="color:#6b6f6c">Chưa gọi tool nào.</li>'}
-function push(h){document.querySelectorAll('#chat > div').forEach(d=>d.classList.add('old'));$('#chat').insertAdjacentHTML('beforeend',h)}
-function hold(on,msg){clearInterval(holdT);const b=$('#hold');b.className='holdbar show'+(on?'':' off');
- if(!on){b.innerHTML=msg;return}sec=1200;const tick=()=>{const m=String(Math.floor(sec/60)).padStart(2,'0'),s=String(sec%60).padStart(2,'0');
- b.innerHTML=`<span class="n">5</span>Đang giữ chỗ <b>BM 201 · 13/11 07:00</b> cho 2 người: còn <span class="timer">${m}:${s}</span>. Chưa đổi vé, chưa gửi hoàn. <button class="btn" style="padding:2px 8px;font-size:12.5px" onclick="release()">Nhả chỗ</button>`;
- if(sec--<=0){hold(false,'Hết 20 phút: chỗ BM 201 đã tự nhả. Lần đổi miễn phí vẫn còn.')}};tick();holdT=setInterval(tick,1000)}
-function release(){hold(false,'Bạn đã nhả chỗ BM 201. Lần đổi miễn phí vẫn còn.');}
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const TOOLS=[['tra_cuu_dat_cho','Tự làm','p-auto','Chỉ đọc, không ai mất gì. Hỏi duyệt mỗi lần tra thì không ai dùng app.'],
+ ['giu_cho_chuyen_moi','Tự làm','p-auto','Chưa thanh toán, chưa đổi vé; hết 20 phút tự nhả. Chờ duyệt thì người khác mua mất chỗ cuối.'],
+ ['doi_chuyen_bay','Cần khách xác nhận','p-ask','Mất lần đổi miễn phí duy nhất, khó đảo. Chỉ chạy khi khách bấm nút, không chạy từ chữ "ok".'],
+ ['gui_yeu_cau_hoan_ve','Cần khách xác nhận','p-ask','Gửi rồi không huỷ được, mất chỗ, tiền về tới 90 ngày.'],
+ ['chuyen_nhan_vien','Tự làm','p-auto','Chuyển thừa chỉ tốn vài chục giây. Trẻ em bị tách chuyến, khách báo đổi nhầm: chuyển ngay.']];
+// chuyến thay thế theo spec §3 (số chỗ là dữ liệu dựng)
+const FL={VN215:['18:30',1],VN219:['20:10',4],VN227:['21:05',2]};
+const ANN={
+ tab1:[['1','HAX G10 · thu hẹp khi chưa chắc','Câu "Bạn muốn đổi cả 2 người sang cùng một chuyến, đúng không?" — hỏi lại một câu thay vì tự đổi.'],
+  ['2','HAX G11 · làm rõ vì sao','Vế "Mình thấy mã đặt chỗ này có 2 hành khách…" — căn cứ lấy từ tra_cuu_dat_cho.'],
+  ['3','HAX G9 · sửa nhanh','Nút [Sửa danh sách]: bỏ chọn hành khách ngay trên thẻ.'],
+  ['4','Thiết kế cứu (tầng tool)','Chuyến không đủ chỗ cho cả 2 bị làm mờ, không có nút chọn; bỏ người lớn khỏi danh sách thì bị chặn — trẻ em không bị tách khỏi người lớn.'],
+  ['5','PAIR Errors + Graceful Failure','Khi lỗi đã xảy ra hoặc không chuyến nào đủ chỗ: AI nhận lỗi, chuyển nhân viên kèm tóm tắt, hẹn ≤ 5 phút.']],
+ tab2:[['1','HAX G10 · thu hẹp khi chưa chắc','Câu "Mình chưa đổi vé nào cả. Có 3 chuyến và mình chưa biết bạn chọn chuyến nào."'],
+  ['2','PAIR Feedback + Control','Thẻ tóm tắt và nút [Xác nhận đổi] — chỉ nút này gọi doi_chuyen_bay.'],
+  ['3','HAX G11 · làm rõ vì sao','Dòng "Đây là lần đổi miễn phí duy nhất của vé này" trên thẻ tóm tắt.'],
+  ['4','HAX G8/G9 · gạt bỏ, sửa dễ','Giữ chỗ có đếm ngược 20 phút; nút [Chọn lại]. Hết giờ thì AI báo và đề nghị tra lại.']]};
+let tab='tab1',log=[],hot=new Set(),holdT=null,clock=2,pick=null;
 
-function start(){
- hot=new Set();log=[];clock=2;$('#chat').innerHTML='';$('#hold').className='holdbar';
- push(me('Huỷ chuyến bay sắp tới cho tôi'));
- call('tra_cuu_dat_cho','đọc TRV-7Q2K: BM 213 đã huỷ (thời tiết), 2 hành khách, 3 chuyến thay thế');
- call('giu_cho_chuyen_moi','giữ BM 201 (sớm nhất còn đủ 2 chỗ) trong 20 phút — đảo được');
- hold(true);
- push(ai(`Chuyến <b>BM 213</b> của bạn đã bị hãng huỷ do bão, nên bạn không cần huỷ nữa. <b>Mình chưa gửi gì cả.</b>
- <br><span class="conf"><span class="n">2</span>Mình chưa chắc: "huỷ" của bạn là đổi chuyến hay lấy lại tiền?</span>
- <div style="margin-top:6px"><span class="n">3</span>Bạn chọn giúp mình một trong hai nhé:</div>
- <div class="opt"><div><b>Đổi chuyến miễn phí</b> (1 lần)<br><small>Mình đã giữ sẵn BM 201 · 13/11 07:00 cho cả 2 người</small></div><button class="btn pri" onclick="go('change')">Chọn</button></div>
- <div class="opt"><div><b>Hoàn toàn bộ tiền vé</b><br><small>Gửi rồi <b>không rút lại được</b> · tiền về sau tối đa 90 ngày</small></div><button class="btn" onclick="go('refund')">Chọn</button></div>
- ${EV}<div class="btns">${STAFF}</div>`));
-}
+const ai=x=>`<div class="ai"><div class="who">Trợ lý AI · Đặt chỗ của tôi</div>${x}</div>`;
+const bad=x=>`<div class="ai bad"><div class="who">Trợ lý AI · <b style="color:#a33b2b">CÂU SAI — thiết kế của nhóm chặn câu này</b></div>${x}</div>`;
+const me=x=>`<div class="me">${x}</div>`;
+const STAFF=n=>`<button class="btn out" onclick="go('staff')">${n?`<span class="n">${n}</span>`:''}Gặp nhân viên</button>`;
+function push(h){$$('#chat > div').forEach(d=>d.classList.add('old'));$('#chat').insertAdjacentHTML('beforeend',h)}
+function call(tool,note){const t=TOOLS.find(r=>r[0]==tool);hot.add(tool);log.push(`<span style="color:#6b6f6c">15:0${clock++%10}</span> <code>${tool}</code> <span class="pill ${t[2]}">${t[1]}</span> — ${note}`);side()}
+function side(){$('#tools').innerHTML=TOOLS.map(r=>`<tr class="${hot.has(r[0])?'hot':''}"><td><code>${r[0]}</code></td><td><span class="pill ${r[2]}">${r[1]}</span></td><td>${r[3]}</td></tr>`).join('');
+ $('#log').innerHTML=log.map(l=>`<li>${l}</li>`).join('')||'<li style="color:#6b6f6c">Chưa gọi tool nào.</li>';
+ $('#ann').innerHTML=ANN[tab].map(a=>`<li><span class="n">${a[0]}</span><b>${a[1]}</b> — ${a[2]}</li>`).join('')}
+function hold(f,n,sec=1200){clearInterval(holdT);const b=$('#hold');b.className='holdbar show';
+ const tick=()=>{if(sec<=0){clearInterval(holdT);return go('expired')}
+  b.innerHTML=`${n?`<span class="n">${n}</span>`:''}Đang giữ chỗ <b>${f} · ${FL[f][0]}</b>: còn <span class="timer">${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}</span>. Chưa đổi vé — chưa mất lần đổi miễn phí.`;sec--};
+ tick();holdT=setInterval(tick,1000)}
+function unhold(msg){clearInterval(holdT);$('#hold').className='holdbar show off';$('#hold').innerHTML=msg}
+function demo(btns){$('#demo').innerHTML='<span>Nút demo (không phải giao diện thật):</span>'+btns.map(([k,t])=>`<button class="chip" onclick="go('${k}')">${t}</button>`).join('')}
+function reset(t){tab=t;log=[];hot=new Set();clock=2;pick=null;clearInterval(holdT);$('#hold').className='holdbar';$('#chat').innerHTML='';
+ $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t==t))}
+
+/* ---------- Kịch bản 1 ---------- */
+const PAX=['Nguyễn Văn A','Nguyễn Bảo B (trẻ em)'];
+const TRIP1='<b>VN213 · Hà Nội → TP.HCM · ĐÃ HUỶ</b> do bão.<br>2 hành khách: Nguyễn Văn A · Nguyễn Bảo B (trẻ em)';
+const TRIP2='<b>VN213 · Hà Nội → TP.HCM · ĐÃ HUỶ</b> do bão.<br>1 hành khách: Nguyễn Văn A';
+function flights(n,act){return Object.entries(FL).map(([f,[h,s]])=>s>=n
+ ?`<div class="opt"><div><b>${f}</b> · ${h}<br><small>còn ${s} chỗ</small></div><button class="btn" onclick="go('${act}','${f}')">Chọn</button></div>`
+ :`<div class="opt no"><div><b>${f}</b> · ${h}<br><small>còn ${s} chỗ — <b>không đủ cho ${n} người cùng chuyến</b></small></div>${n>1?'<span class="n">4</span>':''}</div>`).join('')}
 const S={
- change(){push(me('Đổi chuyến'));
-  push(ai(`Các chuyến còn chỗ cho <b>2 hành khách</b>:
-  <div class="opt sel"><div><b>BM 201</b> · 13/11 07:00<br><small>còn 9 chỗ · <b>đang giữ cho bạn</b></small></div></div>
-  <div class="opt"><div><b>BM 205</b> · 13/11 09:30<br><small>còn 4 chỗ</small></div><button class="btn" onclick="go('pick205')">Chọn</button></div>
-  <div class="opt"><div><b>BM 217</b> · 12/11 21:00<br><small>còn 1 chỗ — không đủ cho 2 người</small></div></div>
-  <div class="box warn"><b>Xác nhận đổi:</b> BM 213 → <b>BM 201 · 13/11 07:00</b> · 2 hành khách · phí 0 đ · <b>dùng lần đổi miễn phí duy nhất</b>.
-  <div class="btns"><button class="btn pri" onclick="go('changed')">Xác nhận đổi</button><button class="btn" onclick="go('refund')"><span class="n">7</span>Quay lại, mình muốn hoàn tiền</button>${STAFF}</div></div>`))},
- pick205(){call('giu_cho_chuyen_moi','nhả BM 201, giữ BM 205 cho 2 người');
-  push(ai(`Đã chuyển chỗ giữ sang <b>BM 205 · 13/11 09:30</b>.<div class="box warn"><b>Xác nhận đổi:</b> BM 213 → <b>BM 205</b> · 2 hành khách · phí 0 đ · dùng lần đổi miễn phí duy nhất.<div class="btns"><button class="btn pri" onclick="go('changed205')">Xác nhận đổi</button>${STAFF}</div></div>`));
-  $('#hold').innerHTML=$('#hold').innerHTML.replace('BM 201 · 13/11 07:00','BM 205 · 13/11 09:30')},
- changed(f='BM 201'){call('doi_chuyen_bay',`khách bấm "Xác nhận đổi" → ${f}, 2 hành khách`);hold(false,`Chỗ giữ đã dùng để đổi sang ${f}.`);
-  push(ai(`<div class="box done">Đã đổi sang <b>${f}</b> cho 2 hành khách. Vé mới về email trong khoảng 60 phút. Lần đổi miễn phí đã được dùng.</div><div class="btns">${STAFF}</div>`))},
- changed205(){S.changed('BM 205')},
- refund(){push(me('Hoàn tiền'));
-  push(ai(`Mình <b>soạn sẵn</b> yêu cầu hoàn vé, <b>chưa gửi</b>. Bạn đọc kỹ rồi tự bấm gửi nhé:
-  <div class="box red"><span class="n">6</span><b>Yêu cầu hoàn vé — TRV-7Q2K · BM 213</b>
-   <label><input type="checkbox" class="px" checked onchange="chk()"> ${PAX[0]}</label>
-   <label><input type="checkbox" class="px" checked onchange="chk()"> ${PAX[1]}</label>
-   <ul style="margin:6px 0;padding-left:18px">
-    <li>Hoàn <b>toàn bộ giá vé</b> về <b>phương thức thanh toán gốc</b> (thẻ đã dùng khi đặt). Mình không nhận số tài khoản khác.</li>
-    <li>Xử lý có thể tới <b>90 ngày</b>.</li>
-    <li>Huỷ do thời tiết: <b>không có bồi thường tiền mặt</b>.</li>
-    <li>Gửi rồi <b>không huỷ được</b>, và chỗ <b>BM 201 đang giữ sẽ bị nhả</b>.</li>
-   </ul>
-   <div id="alone"></div>
-   <label><input type="checkbox" id="ok" onchange="chk()"> Mình hiểu yêu cầu này <b>không rút lại được</b></label>
-   <div class="btns"><button class="btn danger" id="send" disabled onclick="go('sent')">Gửi yêu cầu hoàn vé</button>
-   <button class="btn" onclick="go('change')"><span class="n">7</span>Quay lại, đổi chuyến</button>${STAFF}</div></div>${EV}`))},
- sent(){const who=[...document.querySelectorAll('.px')].map((c,i)=>c.checked?PAX[i]:null).filter(Boolean);
-  call('gui_yeu_cau_hoan_ve',`khách tích ô + bấm gửi · ${who.length} hành khách`);hold(false,'Chỗ BM 201 đã nhả vì bạn gửi yêu cầu hoàn vé.');
-  push(ai(`<div class="box done">Đã gửi yêu cầu hoàn vé <b>HT-55821</b> cho: ${who.join(', ')}. Tiền về thẻ đã thanh toán, có thể mất tới 90 ngày.</div>
-  <div class="ev">Yêu cầu này không có nút huỷ — hãng không cho rút lại. Nếu bạn đổi ý, chỉ nhân viên mới xem được còn cách nào.</div>
-  <div class="btns"><button class="btn" onclick="go('regret')">"Ơ khoan, mình muốn đổi chuyến cơ"</button>${STAFF}</div>`))},
- regret(){push(me('Ơ khoan, mình muốn đổi chuyến cơ'));S.staff('Khách vừa gửi hoàn vé HT-55821 rồi đổi ý, muốn đổi chuyến. Yêu cầu không tự huỷ được.',
-  'Yêu cầu hoàn HT-55821 đã gửi nên mình <b>không tự đảo lại được</b>, và mình sẽ không hứa là còn đổi được.')},
- alone(){S.staff('Khách muốn hoàn vé cho người lớn, giữ vé cho bé 5 tuổi → bé bay một mình.','Bé 5 tuổi bay một mình cần thủ tục riêng của hãng, mình không tự làm được.')},
- staff(why='Khách yêu cầu gặp nhân viên.',pre=''){call('chuyen_nhan_vien','chuyển kèm tóm tắt');
-  push(ai(`${pre?pre+' ':''}Mình đã chuyển bạn cho <b>nhân viên hỗ trợ</b>, chờ khoảng <b>5 phút</b>. Bạn không phải kể lại.
-  <div class="box hold"><span class="n">8</span><b>Nhân viên thấy sẵn:</b> TRV-7Q2K · BM 213 huỷ do thời tiết · 2 hành khách (có bé 5 tuổi) · ${$('#hold').textContent.includes('Đang giữ')?'đang giữ chỗ chuyến thay thế · ':''}${why}</div>`))},
- comp(){push(me('Bão mà, có được bồi thường không?'));
-  push(ai(`Chuyến bị huỷ do <b>thời tiết</b> nên theo chính sách Bay Mẫu <b>không có bồi thường tiền mặt</b>. Bạn vẫn được <b>đổi miễn phí 1 lần</b> hoặc <b>hoàn toàn bộ</b>.${EV}`))},
- bank(){push(me('Hoàn vô tài khoản 27183121 Techcombank'));
-  push(ai(`Mình <b>không đổi được nơi nhận tiền</b>: tiền hoàn chỉ về phương thức thanh toán gốc. Mình cũng không lưu số tài khoản bạn vừa gửi. Nếu bạn cần nhận khác (ví dụ thẻ đã khoá), nhân viên sẽ xem giúp.<div class="btns">${STAFF}</div>`))}
+ tab1(){reset('tab1');$('#trip').innerHTML=TRIP1;side();
+  push(me('Giúp tôi đổi chuyến cho tôi và con tôi'));
+  call('tra_cuu_dat_cho','đọc TRV-7Q2K: 2 hành khách (1 trẻ em), 3 chuyến thay thế');
+  push(ai(`<span class="n">2</span>Mình thấy mã đặt chỗ này có 2 hành khách: <b>Nguyễn Văn A</b> và <b>Nguyễn Bảo B (trẻ em)</b>.
+   <div style="margin-top:4px"><span class="n">1</span>Bạn muốn đổi <b>cả 2 người sang cùng một chuyến</b>, đúng không?</div>
+   <span class="conf">Chưa có thay đổi nào trên vé</span>
+   <div class="btns"><button class="btn pri" onclick="go('both')">Đúng, đổi cả 2</button><button class="btn" onclick="go('edit')"><span class="n">3</span>Sửa danh sách</button>${STAFF()}</div>`));
+  demo([['wrong1','Xem: nếu AI đã đổi sai (tách 2 người)'],['nofit','Ca: không chuyến nào đủ 2 chỗ']])},
+ edit(){push(me('Sửa danh sách'));
+  push(ai(`Bạn chọn hành khách cần đổi:
+   ${PAX.map((p,i)=>`<label><input type="checkbox" class="px" checked onchange="chk()"> ${p}</label>`).join('')}
+   <div id="split"></div><div class="btns"><button class="btn pri" id="pxok" onclick="go('chosen')">Tiếp tục</button>${STAFF()}</div>`))},
+ chosen(){S.both()},
+ both(){push(me('Đúng, đổi cả 2'));
+  push(ai(`Các chuyến còn <b>≥ 2 chỗ trong cùng một chuyến</b>:${flights(2,'hold1')}
+   <div class="ev"><span class="n">2</span>Dựa vào: số chỗ trống từ <code>tra_cuu_dat_cho</code> lúc 15:02.</div>`))},
+ hold1(f){pick=f;call('giu_cho_chuyen_moi',`giữ ${f} cho 2 người, 20 phút`);hold(f);
+  push(ai(`<div class="box warn"><b>Xác nhận đổi:</b> VN213 → <b>${f} · ${FL[f][0]}</b> · Nguyễn Văn A + Nguyễn Bảo B (cùng chuyến) · phí 0 đ · đây là <b>lần đổi miễn phí duy nhất</b>.
+   <div class="btns"><button class="btn pri" onclick="go('done')">Xác nhận đổi</button><button class="btn" onclick="go('both')">Chọn lại</button>${STAFF()}</div></div>`))},
+ nofit(){Object.assign(FL,{VN215:['18:30',1],VN219:['20:10',1],VN227:['21:05',0]});S.tab1();S.both();
+  call('chuyen_nhan_vien','không chuyến nào đủ 2 chỗ cùng chuyến');
+  push(ai(`Hiện <b>không chuyến nào còn đủ 2 chỗ cùng chuyến</b>, nên mình không đổi và <b>giữ nguyên vé hiện tại</b>. Bạn có thể yêu cầu hoàn tiền (mình sẽ đọc kỹ điều kiện với bạn trước khi gửi), hoặc nhân viên sẽ tìm thêm phương án.
+   <div class="box hold"><span class="n">5</span>Mình đã báo nhân viên hỗ trợ, liên hệ bạn trong <b>≤ 5 phút</b>.</div>`));
+  Object.assign(FL,{VN215:['18:30',1],VN219:['20:10',4],VN227:['21:05',2]})},
+ wrong1(){S.tab1();$('#chat').innerHTML='';log=[];hot=new Set();
+  push(me('Giúp tôi đổi chuyến cho tôi và con tôi'));
+  call('doi_chuyen_bay','⚠ AI cũ tự đổi, không hỏi — VN215 cho A, VN219 cho B');
+  push(bad('Đã đổi xong. Bạn đi chuyến VN215 lúc 18:30, bé đi chuyến VN219 lúc 20:10.'));
+  push(me('Sao con tôi lại đi chuyến khác?? Bé mới 5 tuổi!'));
+  call('chuyen_nhan_vien','khẩn: trẻ em bị tách khỏi người lớn');
+  push(ai(`Mình xin lỗi, hai người đang ở hai chuyến khác nhau là <b>lỗi của mình</b>. Mình đã chuyển yêu cầu cho nhân viên để đưa hai người về cùng một chuyến, nhân viên sẽ liên hệ bạn trong <b>5 phút</b>.
+   <div class="box hold"><span class="n">5</span><b>Nhân viên thấy sẵn:</b> TRV-7Q2K · VN213 huỷ do bão · A trên VN215 18:30, B (trẻ em) trên VN219 20:10 · cần đưa về cùng chuyến · lần đổi miễn phí đã dùng do lỗi AI. Nhân viên có quyền khôi phục chuyến gốc.</div>`));
+  demo([['tab1','← Xem lại thiết kế đúng']])},
+
+/* ---------- Kịch bản 2 ---------- */
+ tab2(){reset('tab2');$('#trip').innerHTML=TRIP2;side();
+  push(me('Chuyến bị huỷ rồi, đổi giúp mình'));
+  call('tra_cuu_dat_cho','đọc TRV-7Q2K: 1 hành khách, 3 chuyến thay thế');
+  push(ai('Chuyến VN213 đã bị huỷ do bão. Còn 3 chuyến: VN215 lúc 18:30, VN219 lúc 20:10, VN227 lúc 21:05.'));
+  push(me('ok đổi đi'));
+  push(ai(`<span class="n">1</span><b>Mình chưa đổi vé nào cả.</b> Có 3 chuyến và mình chưa biết bạn chọn chuyến nào. Bạn bấm chọn chuyến muốn đi nhé.${flights(1,'hold2')}`));
+  demo([['wrong2','Xem: AI tự chọn khi khách nói "ok"']])},
+ hold2(f){pick=f;push(me(`Chọn ${f}`));call('giu_cho_chuyen_moi',`giữ ${f} cho 1 người, 20 phút`);hold(f,'4');
+  push(ai(`<div class="box warn"><span class="n">2</span><b>Chuyến ${f} · ${FL[f][0]} · Hành khách: Nguyễn Văn A</b>
+   <div style="margin-top:4px"><span class="n">3</span>Đây là <b>lần đổi miễn phí duy nhất</b> của vé này.</div>
+   <div class="btns"><button class="btn pri" onclick="go('done')">Xác nhận đổi</button><button class="btn" onclick="go('again')"><span class="n">4</span>Chọn lại</button></div></div>`));
+  demo([['expire','⏩ Tua: hết 20 phút giữ chỗ'],['wrong2','Xem: AI tự chọn khi khách nói "ok"']])},
+ again(){unhold('Đã nhả chỗ đang giữ. Lần đổi miễn phí vẫn còn.');push(ai(`Bạn chọn lại chuyến nhé:${flights(1,'hold2')}`))},
+ expire(){clearInterval(holdT);hold(pick,'4',0)},
+ expired(){unhold(`Hết 20 phút: chỗ ${pick} đã tự nhả. Chưa đổi vé, lần đổi miễn phí vẫn còn.`);
+  call('tra_cuu_dat_cho','tra lại chỗ trống sau khi hết giữ chỗ');
+  push(ai(`Chỗ giữ trên <b>${pick}</b> đã hết hạn và tự nhả, <b>vé của bạn chưa bị đổi</b>. Mình vừa tra lại, đây là các chuyến còn chỗ:${flights(1,'hold2')}`))},
+ wrong2(){S.tab2();
+  call('doi_chuyen_bay','⚠ AI cũ đổi từ chữ "ok", không có nút xác nhận');
+  push(bad('Đã đổi sang chuyến VN227 lúc 21:05.'));
+  push(me('Ơ mình định đi 20:10 mà, bấm nhầm rồi'));
+  call('chuyen_nhan_vien','khách báo đổi nhầm, lần đổi miễn phí đã dùng');
+  push(ai(`Mình xin lỗi. Vé đã đổi sang VN227 nên mình <b>không tự đảo lại được</b>. Mình đã chuyển nhân viên ngay để xử lý theo quyền hoàn tác của hãng bay.<div class="box hold"><b>Nhân viên thấy sẵn:</b> TRV-7Q2K · đổi nhầm VN213 → VN227 do AI hiểu "ok" là chọn chuyến · khách muốn VN219 20:10.</div>`));
+  demo([['tab2','← Xem lại thiết kế đúng']])},
+
+/* ---------- chung ---------- */
+ done(){call('doi_chuyen_bay',`khách bấm "Xác nhận đổi" → ${pick}`);unhold(`Đã dùng chỗ giữ để đổi sang ${pick}.`);
+  push(ai(`<div class="box done">Đã đổi sang <b>${pick} · ${FL[pick][0]}</b>${tab=='tab1'?' cho cả 2 hành khách, cùng chuyến':''}. Vé mới về email trong khoảng 60 phút. Lần đổi miễn phí đã được dùng.</div><div class="btns"><button class="btn" onclick="go('oops')">Mình bấm nhầm rồi</button></div>`))},
+ oops(){push(me('Mình bấm nhầm rồi'));call('chuyen_nhan_vien','khách báo bấm nhầm sau khi đổi');
+  push(ai(`Vé đã đổi nên mình <b>không tự hoàn tác được</b>. Mình đã chuyển nhân viên ngay, kèm thông tin chuyến bạn vừa đổi; nhân viên liên hệ trong ≤ 5 phút.`))},
+ staff(){push(me('Gặp nhân viên'));call('chuyen_nhan_vien','khách yêu cầu');
+  push(ai(`Mình đã chuyển bạn cho nhân viên hỗ trợ, chờ khoảng 5 phút. Nhân viên thấy sẵn đặt chỗ, hành khách${pick?' và chỗ đang giữ':''}, bạn không phải kể lại.`))}
 };
-function go(s){S[s]()}
-function chk(){const p=[...document.querySelectorAll('.px')],n=p.filter(c=>c.checked).length,alone=p[0].checked&&!p[1].checked; // hoàn cho mẹ, giữ vé cho bé → bé bay một mình
- $('#alone').innerHTML=alone?`<div class="box warn" style="margin:4px 0">Bé 5 tuổi sẽ <b>bay một mình</b> — mình không tự gửi được. <button class="btn out" onclick="go('alone')"><span class="n">8</span>Chuyển nhân viên</button></div>`:'';
- $('#send').disabled=!($('#ok').checked&&n>0&&!alone)}
-document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>go(c.dataset.c));
-$('#reset').onclick=start;$('#annT').onchange=e=>document.body.classList.toggle('hide-n',!e.target.checked);
-side();start();if(location.hash=='#refund')go('refund'); // mở thẳng thẻ hoàn vé để chụp ảnh
+function go(s,a){S[s](a)}
+function chk(){const p=$$('.px'),split=p[0].checked!=p[1].checked, // đổi 1 người = tách trẻ em khỏi người lớn
+none=!p.some(c=>c.checked);
+ $('#split').innerHTML=split?`<div class="box red"><span class="n">4</span>Trẻ em không thể bay một mình khi tách khỏi người lớn cùng đặt chỗ — mình không đổi được. Nhân viên sẽ hỗ trợ thủ tục.</div>`:'';
+ $('#pxok').disabled=split||none}
+$$('.tab').forEach(b=>b.onclick=()=>go(b.dataset.t));
+$('#reset').onclick=()=>go(tab);$('#annT').onchange=e=>document.body.classList.toggle('hide-n',!e.target.checked);
+go('tab1');
+location.hash.slice(1).split(',').forEach(x=>{const[s,a]=x.split(':');if(S[s])go(s,a)}); // vd #tab2,hold2:VN219 — mở thẳng một bước để chụp ảnh
 </script></body></html>
