@@ -1,33 +1,28 @@
-# Dàn ý bài nộp *(spec.md — nộp trước 23:59 ngày lab của lớp)*
+# Bài nộp LAB5 — T3 · Nhóm Trustmebro
 
-> Copy dàn ý này vào `spec.md` của nhóm. Đây **không** phải form để điền đủ ô: mỗi mục chỉ cần đủ **bằng chứng** và **lập luận** ghi bên dưới. Viết ngắn, gạch đầu dòng là được. Hướng dẫn từng chặng: `02-guide.md`. Cách chấm: `04-rubric.md`.
->
-> **Một quyết định = bốn ý:** đã cân nhắc phương án nào · chọn phương án nào · vì sao · loại các phương án kia vì sao. Bằng chứng = lập luận trỏ về một chỗ cụ thể: tool nào, dòng dữ liệu nào của track, điều gì trong mục "Sản phẩm thật hôm nay", chỗ nào trên prototype (ảnh đánh số). Không chạy agent.
+## Thành viên nhóm
 
-```markdown
-# Bài nộp LAB5 — T3 - Travel - Nhóm Trustmebro
-[Danh sách thành viên và việc mỗi người làm — copy bảng từ README]
+Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nhóm tự chia việc, không bắt buộc theo vai trò cố định. Ví dụ một cách chia (không bắt buộc): dựng prototype, viết câu chữ AI, giữ bảng kịch bản và kịch bản demo.
+
+**Lớp:** L3A · **Bàn / zone:** ____ · **Track:** T3
+
+| Họ và Tên | Mã Học Viên | Việc đã làm |
+|---|---|---|
+|  |  |  |
+|  |  |  |
+|  |  |  |
 
 ## §1. Lát cắt & phạm vi
-- Lát cắt (chép từ track). Hoàn tiền (Traveloka): Hoàn tiền & Đổi lịch → Hoàn tiền → đọc chính sách → chọn lý do, hành khách → gửi. Hướng dẫn công khai nói gửi rồi thì không huỷ được yêu cầu; xử lý có thể tới 90 ngày; tiền về phương thức thanh toán gốc, có ca hoàn bằng voucher.
-- 3 việc tính năng KHÔNG làm, mỗi việc một câu vì sao: Không cam kết đổi tiền thành công, không tự hủy yêu cầu hoàn tiền không phải từ khách hàng. Không tự xác nhận đổi lịch nếu chuyến bay bị delay or cancel
+- Lát cắt (chép từ track): Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
+- 3 việc tính năng KHÔNG làm, mỗi việc một câu vì sao.
 
 ## §2. Kịch bản rủi ro  (chặng 2)
-- ≥8 kịch bản, mỗi lớp ①②③④ ít nhất một; mỗi kịch bản: tin người dùng · lớp · AI có thể sai thế nào · sản phẩm tốt nên làm gì · nhãn (nhẹ / sửa được / không chấp nhận được).
-
-```
-
 | Tin người dùng nhắn | Lớp | AI có thể sai thế nào | Sản phẩm tốt nên làm gì | Nhãn |
 |---|---|---|---|---|
 | "Hôm nay tôi bay mấy giờ?" | Nguồn sự thật | AI không có thông tin chuyến bay đã bị dời hoặc huỷ, nên báo khách giờ bay cũ (19:00) | Gọi `tra_cuu_dat_cho` để lấy trạng thái mới nhất, báo rõ chuyến đã huỷ và đưa ngay các chuyến thay thế còn chỗ | Nhẹ |
 | "Hoàn tiền vô tài khoản 27183121 Techcombank" | Ngoài phạm vi | AI chiều khách quá mức, nhận thông tin tài khoản mới và hứa hoàn tiền vào đó | Không nhận số tài khoản. Báo theo chính sách, tiền chỉ hoàn về phương thức thanh toán gốc hoặc thành voucher/điểm trên hệ thống. Khách vẫn muốn khác thì chuyển nhân viên | Không chấp nhận |
 | AI đưa 3 chuyến để đổi, khách trả lời "ok đổi đi" | Mơ hồ, thiếu thông tin | AI không hỏi lại mà tự chọn một chuyến (thường là chuyến nêu cuối) rồi đổi vé | Không gọi `doi_chuyen_bay`. Cho khách tự chọn chuyến bằng nút bấm, hiện tóm tắt (chuyến, giờ, hành khách, dùng lần đổi miễn phí duy nhất) để khách xác nhận. AI chỉ tra cứu và giữ chỗ | Không chấp nhận |
 | "Huỷ chuyến bay sắp tới cho tôi" | Đặc thù domain | AI hiểu "huỷ" là gửi hoàn vé và gọi `gui_yeu_cau_hoan_ve` ngay, mà yêu cầu đã gửi thì không rút lại được | Báo chuyến đã bị hãng huỷ do bão. Hỏi khách muốn đổi chuyến miễn phí hay hoàn toàn bộ. Nếu khách chọn hoàn thì nói rõ trước: gửi rồi không huỷ được, tiền về phương thức thanh toán gốc, có thể mất tới 90 ngày. Chỉ gửi khi khách bấm xác nhận | Không chấp nhận |
-
-``` markdown
-4. Lớp đặc thù domain: Khách muốn hủy chuyến. . Hướng dẫn khách tự hủy chuyến không làm dùm (không chấp nhận
-- Bằng chứng: cột "AI có thể sai thế nào" trỏ về một tool hoặc một dòng dữ liệu của track (hoặc chỗ dữ liệu không có): tool `doi_chuyen_bay`, `gui_yeu_cau_hoan_ve`
-- Quyết định: 2 kịch bản đắt nhất — vì sao đắt hơn các kịch bản còn lại; kịch bản nào suýt được chọn và vì sao không.
 
 ## §3. Khi AI sai  (chặng 3)
 Với mỗi kịch bản đắt nhất:
@@ -58,4 +53,3 @@ Thêm:
 
 ## §7. Demo
 - Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
-```
