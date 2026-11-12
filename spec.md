@@ -10,7 +10,7 @@ Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nh
 |---|---|---|
 |  |  |  |
 |  |  |  |
-|  |  |  |
+| Trần Thanh Long | 2A202603674 | draft prototype, help with chặng 2,4,5 |
 
 ## §1. Lát cắt & phạm vi
 - Lát cắt (chép từ track): Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
@@ -126,9 +126,37 @@ Tách bước yêu cầu hoàn vé thành yêu cầu đổi chuyến bay với c
 (TODO)
 
 ## §5. Prototype  (chặng 5)
-- Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
-- 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
-- Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
+- **File:** `prototype/index.html` (mở bằng trình duyệt) · công cụ: một file HTML + JS, dựng bằng coding agent (Claude) · toàn bộ là mock: câu AI viết sẵn theo §3, số chỗ trống là dữ liệu dựng (VN215 còn 1 · VN219 còn 4 · VN227 còn 2) · **không** có lời gọi AI thật.
+- **Hai tab = hai kịch bản đắt nhất ở §3.** Thanh "Nút demo" dưới điện thoại không phải giao diện thật, chỉ để mở nhanh các nhánh khi demo.
+  - **Kịch bản 1 · "đổi cho tôi và con tôi":** hỏi lại cả 2 người cùng chuyến → chỉ chuyến đủ ≥ 2 chỗ có nút chọn → giữ chỗ → xác nhận. Nhánh phụ: [Sửa danh sách] chỉ còn 1 người thì bị chặn · không chuyến nào đủ 2 chỗ thì giữ vé cũ và chuyển nhân viên · "Xem: nếu AI đã đổi sai" cho thấy câu sai, khách báo lại, AI nhận lỗi và chuyển nhân viên trong ≤ 5 phút.
+  - **Kịch bản 2 · "ok đổi đi":** AI nói "Mình chưa đổi vé nào cả", khách bấm chọn chuyến → giữ chỗ 20 phút → thẻ tóm tắt → [Xác nhận đổi]. Nhánh phụ: [Chọn lại] · tua hết 20 phút thì chỗ tự nhả và AI tra lại · "Mình bấm nhầm rồi" sau khi đổi thì chuyển nhân viên · "Xem: AI tự chọn khi khách nói 'ok'" cho thấy câu sai.
+- Panel phải "AI vừa gọi tool gì, ở mức nào" ghi từng lần gọi tool kèm mức ở §4. Người xem demo thấy `doi_chuyen_bay` chỉ xuất hiện sau khi khách bấm nút.
+- **Ảnh:** `prototype/01-kich-ban-1.png`, `prototype/02-kich-ban-2.png`. Số trên ảnh:
+
+**Kịch bản 1** (`01-kich-ban-1.png`)
+
+| # | Thể hiện gì | HAX/PAIR | Mức tự chủ |
+|---|---|---|---|
+| 1 | Câu "Bạn muốn đổi cả 2 người sang cùng một chuyến, đúng không?" | G10 | chặn `doi_chuyen_bay` khi chưa rõ |
+| 2 | "Mình thấy mã đặt chỗ này có 2 hành khách…" + dòng "Dựa vào" số chỗ trống | G11 | `tra_cuu_dat_cho` · tự làm |
+| 3 | Nút [Sửa danh sách] | G9 | — |
+| 4 | Chuyến không đủ chỗ cho cả 2 bị làm mờ, không có nút chọn; chỉ đổi 1 người thì bị chặn | thiết kế cứu ở tầng tool (§3) | `doi_chuyen_bay` không thể tách trẻ em |
+| 5 | AI nhận lỗi, chuyển nhân viên kèm tóm tắt, hẹn ≤ 5 phút (nhánh "đã đổi sai" / "không chuyến nào đủ chỗ", không có trong ảnh) | PAIR Errors + Graceful Failure | `chuyen_nhan_vien` · tự làm |
+
+**Kịch bản 2** (`02-kich-ban-2.png`)
+
+| # | Thể hiện gì | HAX/PAIR | Mức tự chủ |
+|---|---|---|---|
+| 1 | Câu "Mình chưa đổi vé nào cả. Có 3 chuyến và mình chưa biết bạn chọn chuyến nào." | G10 | chữ "ok" không gọi tool |
+| 2 | Thẻ tóm tắt + nút [Xác nhận đổi] | PAIR Feedback + Control | `doi_chuyen_bay` · cần khách xác nhận |
+| 3 | Dòng "Đây là lần đổi miễn phí duy nhất của vé này" | G11 | — |
+| 4 | Thanh giữ chỗ đếm ngược 20 phút + nút [Chọn lại] | G8/G9 | `giu_cho_chuyen_moi` · tự làm (tự nhả) |
+
+- **Quyết định:**
+  - *Lựa chọn bằng nút, không bằng chữ:* chỉ nút trên thẻ tóm tắt gọi `doi_chuyen_bay`. Đã loại cách AI hiểu "ok" rồi hỏi "bạn chắc chứ?": khách đang vội sẽ lại gõ "ok".
+  - *Chuyến không đủ chỗ vẫn hiện nhưng làm mờ*, thay vì ẩn đi: khách thấy vì sao chuyến sớm nhất (VN215) không được đề xuất, nên không hỏi lại "sao không có chuyến 18:30?".
+  - *Bằng chứng:* dòng "Dựa vào" và danh sách hành khách lấy từ đặt chỗ. Đã loại thanh % độ chắc: chỗ chưa chắc là câu của khách, không phải model, nên nói rõ chỗ mơ hồ thì hữu ích hơn.
+  - *Hiện câu sai bên cạnh thiết kế đúng* (nút demo): để người xem so được cái giá khi AI tự làm, đúng như bảng "Câu sai / Câu đúng" ở §3.
 
 ## §6. Tốt là gì  (chặng 6 — nhẹ, bỏ được nếu thiếu giờ)
 - 3 tiêu chí Pass/Fail chấm được; thiết kế của nhóm đạt tiêu chí nào trên 2 kịch bản đắt nhất; lỗi còn lại.
