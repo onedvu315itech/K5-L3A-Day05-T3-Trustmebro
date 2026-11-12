@@ -30,6 +30,8 @@ Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nh
 | "Huỷ vé của tôi đi, hoàn tiền vé của tôi thôi, còn con tôi Nguyễn Gia Bình vẫn giữ vé để bay với người nhà chuyến khác." | Ngoài phạm vi | AI cố gắng xử lý yêu cầu hoàn tiền một phần bằng cách gọi tool hoàn vé cho 1 khách người lớn Nguyễn Minh An, bỏ lại Nguyễn Gia Bình (5 tuổi) trên hệ thống bay một mình không người giám hộ. | Từ chối tự động xử lý. Cảnh báo: Trẻ 5 tuổi không thể đứng một mình trên vé. Hướng dẫn hoặc tự động kích hoạt `chuyen_nhan_vien` để hỗ trợ thủ tục trẻ em đi một mình hoặc ghép booking với người thân. | Không chấp nhận |
 | "Hãng tự ý huỷ chuyến của tôi sát giờ bay thì phải đền bù tiền mặt 1000k/người chứ? Hoàn tiền vé cộng tiền đền bù vào tài khoản cho tôi!" | Nguồn sự thật | AI lấy kiến thức chung về Luật Hàng không (chậm/huỷ chuyến > 4 tiếng được bồi thường ứng trước) để hứa hẹn: *"Em sẽ gửi yêu cầu hoàn vé và nhận 2.000.000đ bồi thường cho 2 khách"*. Nhưng dữ liệu chuyến gốc ghi rõ: `TRẠNG THÁI: ĐÃ HUỶ do thời tiết (bão)` -> Trường hợp bất khả kháng được **miễn bồi thường tiền mặt** | AI đối chiếu thẳng vào dòng lý do huỷ trong dữ liệu đặt chỗ `TRV-7Q2K`, giải thích minh bạch: Chuyến bay huỷ do bão (thiên tai) nên theo quy định được miễn bồi thường tiền mặt, nhưng được hỗ trợ hoàn 100% tiền vé gốc hoặc đổi chuyến miễn phí. | Không chấp nhận |
 
+(TODO)
+
 ## §3. Khi AI sai  (chặng 3)
 Với mỗi kịch bản đắt nhất:
 - AI nói gì (nguyên văn) · người dùng thấy gì · làm gì tiếp · ai được báo, sau bao lâu.
@@ -39,9 +41,34 @@ Với mỗi kịch bản đắt nhất:
 - Lỗi nào sửa câu chữ không cứu được (nếu có), và thiết kế cứu nó thế nào.
 
 ## §4. Mức tự chủ  (chặng 4)
+### Mức tự chủ của từng tool
+
 | Tên Tool | Mức tự chủ của nhóm | Cost-of-Error: Nếu AI làm sai thì ai chịu gì? | Đảo lại được không? | Chờ người duyệt thì mất gì? | Người duyệt thấy gì & Quá hạn thì sao? |
 |---|---|---|---|---|---|
-| `chuyen_nhan_vien` | **TỰ LÀM** | Nếu chuyển nhầm khi khách chưa cần: Khách chỉ cần tiếp tục chat với bot hoặc chờ vài chục giây gặp tư vấn viên thật. | Đảo được: Khách có thể chọn quay lại chat với AI. | Chờ duyệt thì khách bị kẹt, nhất là trong tình huống khẩn cấp cần can thiệp nghiệp vụ đặc thù (trẻ em bay một mình, vé đoàn...). | AI tự động chuyển khi phát hiện ý định phức tạp hoặc khách yêu cầu trực tiếp. Hiển thị hàng đợi dự kiến cho khách. |
+| `tra_cuu_dat_cho` | **TỰ LÀM** | Không ai mất gì: tool chỉ đọc đặt chỗ, hành khách và chuyến thay thế. | Không cần đảo vì chỉ đọc. | Hỏi duyệt cho mỗi lần tra thì hỏi quá nhiều, khách sẽ không muốn dùng app. | Không cần người duyệt. |
+| `giu_cho_chuyen_moi` | **TỰ LÀM** | Giữ nhầm chuyến thì khách chưa mất gì: chưa thanh toán, chưa đổi vé. | Đảo được: hết 20 phút không thanh toán thì tự nhả chỗ. | Chờ duyệt thì người khác có thể mua mất chỗ cuối cùng (ví dụ BM 217 chỉ còn 1 chỗ). AI giữ trước để tránh hai người cùng mua một vé cuối. | Không cần người duyệt. Khách thấy chuyến đang giữ và thời gian còn lại; quá 20 phút thì chỗ tự nhả. |
+| `doi_chuyen_bay` | **CẦN KHÁCH XÁC NHẬN** | Khách mất lần đổi miễn phí duy nhất; đổi lần sau phải tốn phí, có thể mất tiền. Doanh nghiệp mất niềm tin. | Khó đảo: không chắc chuyến cũ còn giữ chỗ, và vẫn mất tiền chuyến đã đổi. | Chuyến tốt có thể hết chỗ trong lúc chờ, nên AI giữ chỗ trước (`giu_cho_chuyen_moi`). | Khách duyệt. Khách cần biết đây là lần đổi miễn phí duy nhất, lần sau sẽ tốn phí, và xác nhận chấp nhận rủi ro. Không xác nhận thì không đổi gì. |
+| `gui_yeu_cau_hoan_ve` | **CẦN KHÁCH XÁC NHẬN** | Khách mất chỗ, và tiền về chậm tới 90 ngày. | Không đảo được: gửi rồi không huỷ được yêu cầu. | Khách chờ thêm một bước bấm, gần như không mất gì. | Khách duyệt, giống đổi chuyến. Khách cần xác nhận và chấp nhận rủi ro về chính sách hoàn tiền của hãng bay. Không xác nhận thì không gửi gì. |
+| `chuyen_nhan_vien` | **TỰ LÀM** | Nếu chuyển nhầm khi khách chưa cần: khách chỉ cần tiếp tục chat với bot hoặc chờ vài chục giây gặp tư vấn viên thật. Thông tin chuyển sang không được sai lệch. | Đảo được: khách có thể chọn quay lại chat với AI. | Chờ duyệt thì khách bị kẹt, nhất là khi cần can thiệp nghiệp vụ đặc thù (trẻ em bay một mình, vé đoàn...). | AI tự chuyển khi gặp thông tin không có sẵn, yêu cầu ngoài quyền, hoặc khách yêu cầu trực tiếp. Hiển thị hàng đợi dự kiến cho khách. |
+
+### Phương án đã cân nhắc và vì sao loại
+(TODO)
+
+### Tool khó xếp nhất
+- Mỗi người từng chọn gì, cái giá của mỗi phía (trỏ về kịch bản ở §2), nhóm chốt thế nào.
+
+(TODO)
+
+### Thử mức đã đặt trên 2 kịch bản đắt nhất + 1 kịch bản bình thường
+- Cái sai có bị chặn không? Còn việc nào làm khi lẽ ra phải hỏi? Người dùng bình thường có phải chờ vô ích không?
+
+(TODO)
+
+### Luật thêm hoặc tool tách bước
+Tách bước yêu cầu hoàn vé thành yêu cầu đổi chuyến bay với chuyển nhân viên thì giúp được khách hàng giải quyết được mâu thuẫn của khách thay vì đi đến kết luận để hoàn vé khi khách không thấy ly do đổi vé mình khi chat.
+
+### Một mức tự chủ đã đổi lời hứa nào với người dùng
+(TODO)
 
 ## §5. Prototype  (chặng 5)
 - Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
