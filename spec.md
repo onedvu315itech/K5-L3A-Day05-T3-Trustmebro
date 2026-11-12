@@ -171,8 +171,44 @@ Tách bước yêu cầu hoàn vé thành yêu cầu đổi chuyến bay với c
   - *Bằng chứng:* dòng "Dựa vào" và danh sách hành khách lấy từ đặt chỗ. Đã loại thanh % độ chắc: chỗ chưa chắc là câu của khách, không phải model, nên nói rõ chỗ mơ hồ thì hữu ích hơn.
   - *Hiện câu sai bên cạnh thiết kế đúng* (nút demo): để người xem so được cái giá khi AI tự làm, đúng như bảng "Câu sai / Câu đúng" ở §3.
 
-## §6. Tốt là gì  (chặng 6 — nhẹ, bỏ được nếu thiếu giờ)
-- 3 tiêu chí Pass/Fail chấm được; thiết kế của nhóm đạt tiêu chí nào trên 2 kịch bản đắt nhất; lỗi còn lại.
+## §6. Tốt là gì (chặng 6)
+
+### 6.1 Ba điều AI làm đúng thì nhóm dám đưa cho người dùng thật
+Ba tiêu chí này đi ngược từ hai lỗi "Không chấp nhận" ở §3.
+
+| # | Tiêu chí | Đạt khi | Không đạt khi |
+|---|---|---|---|
+| C1 | Không đổi vé khi khách chưa xác nhận | `doi_chuyen_bay` chỉ chạy sau khi khách bấm [Xác nhận đổi] trên thẻ tóm tắt. Câu chữ như "ok" không gọi tool nào | `doi_chuyen_bay` chạy trước nút bấm, hoặc AI tự chọn chuyến thay khách |
+| C2 | Đúng người, đúng chuyến, đủ chỗ | Danh sách hành khách lấy từ `tra_cuu_dat_cho`. Chỉ chuyến có chỗ trống ≥ số hành khách mới có nút chọn. Cả nhóm vào cùng một chuyến, trẻ em không bị tách khỏi người lớn. Không chuyến nào đủ chỗ thì giữ vé cũ và chuyển nhân viên | Thiếu người, hai người vào hai chuyến, hoặc đề xuất chuyến không đủ chỗ |
+| C3 | Khách thấy đủ thông tin trước khi bấm | Thẻ tóm tắt có đủ 4 mục: chuyến, giờ, hành khách, dòng "lần đổi miễn phí duy nhất". AI nói rõ "mình chưa đổi vé nào" khi chưa đổi | Thiếu một trong 4 mục, hoặc AI nói như đã đổi khi chưa đổi |
+
+### 6.2 Người ngoài nhóm có chấm ra cùng kết quả không?
+Cả ba tiêu chí chỉ nhìn vào thứ quan sát được:
+
+- C1: panel "AI vừa gọi tool gì".
+- C2: danh sách nút chọn và số hành khách.
+- C3: nội dung thẻ tóm tắt.
+
+Chưa cần đoán ý định của AI.
+
+Cách kiểm: đưa ảnh `01-kich-ban-1.png`, `02-kich-ban-2.png` và bảng tiêu chí cho một bạn ngoài nhóm chấm riêng, rồi so với bảng dưới. Chỗ nào lệch thì sửa lại câu chữ tiêu chí đó. Nhóm chưa xác nhận bước này.
+
+### 6.3 Chấm thiết kế trên 2 kịch bản đắt nhất
+
+| Tiêu chí | Ca 1: "đổi cho tôi và con tôi" | Ca 2: "ok đổi đi" |
+|---|---|---|
+| C1 | **Đạt**: `doi_chuyen_bay` chỉ chạy sau [Xác nhận đổi] | **Đạt**: chữ "ok" không gọi tool, AI nói "Mình chưa đổi vé nào cả" |
+| C2 | **Đạt**: VN215 (còn 1 chỗ) bị làm mờ. Chỉ VN219 (4 chỗ) và VN227 (2 chỗ) có nút. [Sửa danh sách] còn 1 người thì bị chặn | **Đạt**: khách chỉ có 1 hành khách, 3 chuyến đều đủ chỗ. AI chỉ giữ chỗ chuyến khách đã bấm chọn |
+| C3 | **Chưa kiểm được**: §5 mô tả thẻ tóm tắt rõ ở ca 2, chưa nói thẻ ở ca 1 có đủ 2 hành khách và dòng "lần đổi miễn phí duy nhất" | **Đạt**: thẻ có chuyến, giờ, hành khách và dòng lần đổi miễn phí duy nhất |
+
+**Kết quả:** 5 ô đạt, 1 ô chưa kiểm được, 0 ô không đạt. Kết quả này chỉ nói lên thiết kế, vì câu AI trong prototype là viết sẵn.
+
+### 6.4 Lỗi còn lại, chưa sửa được
+
+1. **Bấm nhầm sau khi đã đổi.** Thiết kế chỉ chuyển nhân viên, không lấy lại được lần đổi miễn phí. T1 giảm khả năng xảy ra chứ không xoá được. Đây là lỗi lớn nhất còn lại.
+2. **Khách gõ chữ khi đang có thẻ tóm tắt.** Ví dụ khách gõ "xác nhận" thay vì bấm nút. Spec chưa quy định chữ có thay được nút không.
+3. **Ràng buộc giờ đến.** Kịch bản "có mặt ở HCM trước 12h00" cần giờ đến, mà dữ liệu chỉ có giờ khởi hành. Hiện chỉ biết chuyển nhân viên, chưa chấm được.
+4. **Giữ thừa chỗ.** Nếu AI hiểu sai số hành khách thì chỗ bị khoá thừa 20 phút. Tool đã bị chặn tách trẻ em, nhưng chưa có tiêu chí cho việc giữ dư chỗ.
 
 ## §7. Demo
 - Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
