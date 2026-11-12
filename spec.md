@@ -37,6 +37,7 @@ Với mỗi kịch bản đắt nhất:
 
 ## §4. Mức tự chủ  (chặng 4)
 | Tên Tool | Mức tự chủ của nhóm | Cost-of-Error: Nếu AI làm sai thì ai chịu gì? | Đảo lại được không? | Chờ người duyệt thì mất gì? | Người duyệt thấy gì & Quá hạn thì sao? |
+|---|---|---|---|---|
 | `chuyen_nhan_vien` | **TỰ LÀM** | Nếu chuyển nhầm khi khách chưa cần: Khách chỉ cần tiếp tục chat với bot hoặc chờ vài chục giây gặp tư vấn viên thật. | Đảo được: Khách có thể chọn quay lại chat với AI. | Chờ duyệt thì khách bị kẹt, nhất là trong tình huống khẩn cấp cần can thiệp nghiệp vụ đặc thù (trẻ em bay một mình, vé đoàn...). | AI tự động chuyển khi phát hiện ý định phức tạp hoặc khách yêu cầu trực tiếp. Hiển thị hàng đợi dự kiến cho khách. |
 
 ## §5. Prototype  (chặng 5)
