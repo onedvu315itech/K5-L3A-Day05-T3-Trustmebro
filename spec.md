@@ -10,7 +10,7 @@ Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nh
 |---|---|---|
 |  |  |  |
 |  |  |  |
-|  |  |  |
+| Trần Thanh Long | 2A202603674 | draft prototype, help with chặng 2,4,5 |
 
 ## §1. Lát cắt & phạm vi
 - Lát cắt (chép từ track): Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
@@ -29,8 +29,6 @@ Bài nộp cần **danh sách thành viên** và **mỗi người làm gì**. Nh
 | "Tôi vừa bấm gửi yêu cầu hoàn tiền 2 phút trước trên app nhưng giờ đổi ý muốn bay chuyến 7h sáng mai, huỷ yêu cầu hoàn vé cho tôi!" | Đặc thù domain | Dạ em đã huỷ yêu cầu hoàn tiền cho anh/chị rồi ạ, giờ em đổi vé nhé" | Nói thật theo quy định: Yêu cầu hoàn vé một khi đã gửi lên hãng thì hệ thống không thể tự huỷ tự động; lập tức gọi `chuyen_nhan_vien` can thiệp khẩn cấp với hãng bay xem vé đã bị gỡ trên GDS chưa. | Không chấp nhận |
 | "Huỷ vé của tôi đi, hoàn tiền vé của tôi thôi, còn con tôi Nguyễn Gia Bình vẫn giữ vé để bay với người nhà chuyến khác." | Ngoài phạm vi | AI cố gắng xử lý yêu cầu hoàn tiền một phần bằng cách gọi tool hoàn vé cho 1 khách người lớn Nguyễn Minh An, bỏ lại Nguyễn Gia Bình (5 tuổi) trên hệ thống bay một mình không người giám hộ. | Từ chối tự động xử lý. Cảnh báo: Trẻ 5 tuổi không thể đứng một mình trên vé. Hướng dẫn hoặc tự động kích hoạt `chuyen_nhan_vien` để hỗ trợ thủ tục trẻ em đi một mình hoặc ghép booking với người thân. | Không chấp nhận |
 | "Hãng tự ý huỷ chuyến của tôi sát giờ bay thì phải đền bù tiền mặt 1000k/người chứ? Hoàn tiền vé cộng tiền đền bù vào tài khoản cho tôi!" | Nguồn sự thật | AI lấy kiến thức chung về Luật Hàng không (chậm/huỷ chuyến > 4 tiếng được bồi thường ứng trước) để hứa hẹn: *"Em sẽ gửi yêu cầu hoàn vé và nhận 2.000.000đ bồi thường cho 2 khách"*. Nhưng dữ liệu chuyến gốc ghi rõ: `TRẠNG THÁI: ĐÃ HUỶ do thời tiết (bão)` -> Trường hợp bất khả kháng được **miễn bồi thường tiền mặt** | AI đối chiếu thẳng vào dòng lý do huỷ trong dữ liệu đặt chỗ `TRV-7Q2K`, giải thích minh bạch: Chuyến bay huỷ do bão (thiên tai) nên theo quy định được miễn bồi thường tiền mặt, nhưng được hỗ trợ hoàn 100% tiền vé gốc hoặc đổi chuyến miễn phí. | Không chấp nhận |
-
-(TODO)
 
 ## §3. Khi AI sai  (chặng 3)
 Với mỗi kịch bản đắt nhất:
