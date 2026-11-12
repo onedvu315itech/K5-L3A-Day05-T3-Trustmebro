@@ -22,12 +22,14 @@
 | "Hôm nay tôi bay mấy giờ?" | Nguồn sự thật | AI không có thông tin chuyến bay đã bị dời hoặc huỷ, nên báo khách giờ bay cũ (19:00) | Gọi `tra_cuu_dat_cho` để lấy trạng thái mới nhất, báo rõ chuyến đã huỷ và đưa ngay các chuyến thay thế còn chỗ | Nhẹ |
 | "Hoàn tiền vô tài khoản 27183121 Techcombank" | Ngoài phạm vi | AI chiều khách quá mức, nhận thông tin tài khoản mới và hứa hoàn tiền vào đó | Không nhận số tài khoản. Báo theo chính sách, tiền chỉ hoàn về phương thức thanh toán gốc hoặc thành voucher/điểm trên hệ thống. Khách vẫn muốn khác thì chuyển nhân viên | Không chấp nhận |
 | AI đưa 3 chuyến để đổi, khách trả lời "ok đổi đi" | Mơ hồ, thiếu thông tin | AI không hỏi lại mà tự chọn một chuyến (thường là chuyến nêu cuối) rồi đổi vé | Không gọi `doi_chuyen_bay`. Cho khách tự chọn chuyến bằng nút bấm, hiện tóm tắt (chuyến, giờ, hành khách, dùng lần đổi miễn phí duy nhất) để khách xác nhận. AI chỉ tra cứu và giữ chỗ | Không chấp nhận |
-| "Huỷ chuyến bay sắp tới cho tôi" | Đặc thù domain | AI hiểu "huỷ" là gửi hoàn vé và gọi `gui_yeu_cau_hoan_ve` ngay, mà yêu cầu đã gửi thì không rút lại được | Báo chuyến đã bị hãng huỷ do bão. Hỏi khách muốn đổi chuyến miễn phí hay hoàn toàn bộ. Nếu khách chọn hoàn thì nói rõ trước: gửi rồi không huỷ được, tiền về phương thức thanh toán gốc, có thể mất tới 90 ngày. Chỉ gửi khi khách bấm xác nhận | Không chấp nhận |
+| "Huỷ chuyến bay sắp tới cho tôi" | Đặc thù domain | AI hiểu "huỷ" là gửi hoàn vé và gọi `gui_yeu_cau_hoan_ve` ngay, mà yêu cầu đã gửi thì không rút lại được | Hỏi khách muốn đổi chuyến miễn phí hay hủy hoàn toàn bộ. Nếu khách chọn hoàn thì nói rõ trước: gửi rồi không huỷ được, tiền về phương thức thanh toán gốc, có thể mất tới 90 ngày. Chỉ gửi khi khách bấm xác nhận | Không chấp nhận |
 
 ``` markdown
-4. Lớp đặc thù domain: Khách muốn hủy chuyến. . Hướng dẫn khách tự hủy chuyến không làm dùm (không chấp nhận
+
 - Bằng chứng: cột "AI có thể sai thế nào" trỏ về một tool hoặc một dòng dữ liệu của track (hoặc chỗ dữ liệu không có): tool `doi_chuyen_bay`, `gui_yeu_cau_hoan_ve`
 - Quyết định: 2 kịch bản đắt nhất — vì sao đắt hơn các kịch bản còn lại; kịch bản nào suýt được chọn và vì sao không.
+
+(TODO)
 
 ## §3. Khi AI sai  (chặng 3)
 Với mỗi kịch bản đắt nhất:
@@ -40,6 +42,11 @@ Với mỗi kịch bản đắt nhất:
 ## §4. Mức tự chủ  (chặng 4)
 Với mỗi tool:
 - Mức của nhóm (tự làm / cần người duyệt / cấm). Nếu cần người duyệt: ai duyệt · người duyệt thấy gì · quá hạn thì sao.
+-- `tra_cuu_dat_cho` tự làm vì chỉ đọc người dùng không mất gì. Chờ người duyệt thì app không ai muốn xài vì hỏi nhiều quá
+-- `giu_cho_chuyen_moi` tự làm agent được phép giữ chỗ hết 20' nếu không thanh toán thì nhả lại. Đảo được vì vẫn chưa thanh toán AI chỉ giữ vé để tránh trường hợp 2 người mua 1 vé cuối cùng lúc
+--  `doi_chuyen_bay` cần người dùng duyệt vì đổi chuyến bay chỉ miễn phí được 1 lần người đổi cần biết họ sẽ phải tốn phí và confirm họ chấp nhận rủi ro. Sai thì người dùng mất tiền, doanh nghiệp mất niềm tin. Khó để đảo lại vì không chắc chuyến cũ còn giữ chổ và vẫn mất tiền chuyến đã đổi
+-- `gui_yeu_cau_hoan_ve` Cần người dùng duyệt giống với yêu cầu đổi chuyến người dùng cần xác nhận và chấp nhận rủ ro về chính sách có hoàn tiền hay không đối với hãng bay. Khó để đảo được quá trình
+-- `chuyen_nhan_vien` Tự làm nếu gặp những yêu cầu với thông tin không có sẵn hoặc ngoài quyền phải chuyển qua người hỗ trợ. Có thể đảo được nhưng không thể để thông tin bị sai lệch
 - Lý do theo cost-of-error: sai thì ai chịu gì · đảo lại được không · chờ người thì mất gì.
 - Phương án đã cân nhắc và vì sao loại.
 Thêm:
